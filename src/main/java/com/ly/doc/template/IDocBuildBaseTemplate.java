@@ -28,7 +28,9 @@ import com.ly.doc.model.ApiConfig;
 import com.ly.doc.model.ApiDoc;
 import com.ly.doc.model.ApiGroup;
 import com.ly.doc.model.ApiMethodDoc;
+import com.ly.doc.model.annotation.EntryAnnotation;
 import com.ly.doc.model.annotation.FrameworkAnnotations;
+import com.ly.doc.model.annotation.MappingAnnotation;
 import com.ly.doc.model.dependency.FileDiff;
 import com.ly.doc.utils.DocPathUtil;
 import com.ly.doc.utils.DocUtil;
@@ -176,6 +178,41 @@ public interface IDocBuildBaseTemplate {
 	 * @return registered annotations
 	 */
 	FrameworkAnnotations registeredAnnotations();
+
+	/**
+	 * registered annotations.
+	 * @param apiConfig apiConfig
+	 * @return registered annotations
+	 */
+	default FrameworkAnnotations registeredAnnotations(ApiConfig apiConfig) {
+		FrameworkAnnotations frameworkAnnotations = this.registeredAnnotations();
+		List<String> extendAnnotations = apiConfig.getExtendEntryAnnotations();
+		if (CollectionUtil.isNotEmpty(extendAnnotations)) {
+			Map<String, EntryAnnotation> entryAnnotations = frameworkAnnotations.getEntryAnnotations();
+			if (Objects.isNull(entryAnnotations)) {
+				entryAnnotations = new HashMap<>();
+			}
+			for (String annotation : extendAnnotations) {
+				EntryAnnotation entryAnnotation = EntryAnnotation.builder()
+					.setAnnotationName(annotation)
+					.setAnnotationFullyName(annotation);
+				entryAnnotations.put(annotation, entryAnnotation);
+			}
+			frameworkAnnotations.setEntryAnnotations(entryAnnotations);
+		}
+		List<MappingAnnotation> extendMappingAnnotations = apiConfig.getExtendMappingAnnotations();
+		if (CollectionUtil.isNotEmpty(extendMappingAnnotations)) {
+			Map<String, MappingAnnotation> mappingAnnotations = frameworkAnnotations.getMappingAnnotations();
+			if (Objects.isNull(mappingAnnotations)) {
+				mappingAnnotations = new HashMap<>();
+			}
+			for (MappingAnnotation annotation : extendMappingAnnotations) {
+				mappingAnnotations.put(annotation.getAnnotationName(), annotation);
+			}
+			frameworkAnnotations.setMappingAnnotations(mappingAnnotations);
+		}
+		return frameworkAnnotations;
+	}
 
 	/**
 	 * is entry point.
