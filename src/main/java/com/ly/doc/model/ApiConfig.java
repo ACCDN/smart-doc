@@ -25,6 +25,7 @@ import com.ly.doc.constants.ComponentTypeEnum;
 import com.ly.doc.constants.DocLanguage;
 import com.ly.doc.constants.OpenApiTagNameTypeEnum;
 import com.ly.doc.handler.ICustomJavaMethodHandler;
+import com.ly.doc.model.annotation.MappingAnnotation;
 import com.ly.doc.model.jmeter.JMeter;
 import com.ly.doc.model.rpc.RpcApiDependency;
 import com.power.common.util.CollectionUtil;
@@ -502,6 +503,20 @@ public class ApiConfig {
 	 * @since 3.1.0
 	 */
 	private boolean allowSelfReference = Boolean.FALSE;
+
+	/**
+	 * extended entryAnnotations
+	 *
+	 * @since 3.1.0
+	 */
+	private List<String> extendEntryAnnotations;
+
+	/**
+	 * extended mappingAnnotations
+	 *
+	 * @since 3.1.0
+	 */
+	private List<MappingAnnotation> extendMappingAnnotations;
 
 	public static ApiConfig getInstance() {
 		return instance;
@@ -1210,6 +1225,22 @@ public class ApiConfig {
 	public ApiConfig setOpenApiTagNameType(OpenApiTagNameTypeEnum openApiTagNameType) {
 		this.openApiTagNameType = openApiTagNameType;
 		return this;
+	}
+
+	public List<String> getExtendEntryAnnotations() {
+		return extendEntryAnnotations;
+	}
+
+	public void setExtendEntryAnnotations(List<String> extendEntryAnnotations) {
+		this.extendEntryAnnotations = extendEntryAnnotations;
+	}
+
+	public List<MappingAnnotation> getExtendMappingAnnotations() {
+		return extendMappingAnnotations;
+	}
+
+	public void setExtendMappingAnnotations(List<MappingAnnotation> extendMappingAnnotations) {
+		this.extendMappingAnnotations = extendMappingAnnotations;
 	}
 
 }

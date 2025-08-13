@@ -123,7 +123,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 			.filter(Objects::nonNull)
 			.flatMap(Collection::stream)
 			.collect(Collectors.toList());
-		FrameworkAnnotations frameworkAnnotations = this.registeredAnnotations();
+		FrameworkAnnotations frameworkAnnotations = this.registeredAnnotations(apiConfig);
 		return this.processApiData(projectBuilder, frameworkAnnotations, configApiReqParams,
 				new SpringMVCRequestMappingHandler(), new SpringMVCRequestHeaderHandler(), candidateClasses);
 	}
@@ -139,7 +139,7 @@ public class JAXRSDocBuildTemplate implements IDocBuildTemplate<ApiDoc>, IWebSoc
 	@Override
 	public List<WebSocketDoc> renderWebSocketApi(ProjectDocConfigBuilder projectBuilder,
 			Collection<JavaClass> candidateClasses) {
-		FrameworkAnnotations frameworkAnnotations = this.registeredAnnotations();
+		FrameworkAnnotations frameworkAnnotations = this.registeredAnnotations(projectBuilder.getApiConfig());
 		return this.processWebSocketData(projectBuilder, frameworkAnnotations,
 				DefaultWebSocketRequestHandler.getInstance(), candidateClasses);
 	}
